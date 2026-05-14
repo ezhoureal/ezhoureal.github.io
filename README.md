@@ -32,5 +32,4 @@ categories: category-name
 
 ## Deployment
 
-Pushing to `main` runs the GitHub Actions workflow in `.github/workflows/pages.yml`
-and deploys the generated site to GitHub Pages.
+Pushing to `main` deploys the site through GitHub Pages from the repository root.
