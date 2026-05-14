@@ -2,7 +2,7 @@ title: Technical Notes
 description: Engineering notes, implementation writeups, and debugging logs.
 url: "https://ezhoureal.github.io"
 baseurl: ""
-author: ezhoureal
+author: Tianer Zhou
 
 theme: minima
 plugins:

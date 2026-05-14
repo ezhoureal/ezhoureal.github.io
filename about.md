@@ -4,4 +4,4 @@ title: About
 permalink: /about/
 ---
 
-This site collects technical blog posts, implementation notes, and debugging writeups.
+This is where I share my thoughts on interesting technical topics.

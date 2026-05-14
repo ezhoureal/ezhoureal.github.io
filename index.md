@@ -1,4 +1,4 @@
 ---
 layout: home
-title: Technical Notes
+title: Tianer's Blog
 ---
