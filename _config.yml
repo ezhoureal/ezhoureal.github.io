@@ -1,0 +1,25 @@
+title: Technical Notes
+description: Engineering notes, implementation writeups, and debugging logs.
+url: "https://ezhoureal.github.io"
+baseurl: ""
+author:
+  name: ezhoureal
+
+theme: minima
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+
+markdown: kramdown
+highlighter: rouge
+permalink: /:year/:month/:day/:title/
+
+show_excerpts: true
+header_pages:
+  - about.md
+
+minima:
+  skin: auto
+  social_links:
+    - platform: github
+      user_url: "https://github.com/ezhoureal"
