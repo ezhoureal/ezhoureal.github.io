@@ -15,7 +15,7 @@ Rosen is one of the reasons HarmonyOS can deliver smooth animations and responsi
 
 ## Overview
 
-OpenHarmony's Rosen library is the core rendering system that turns application UI state into pixels on screen. At a high level, it works like a client-server rendering architecture:
+OpenHarmony's [Rosen library](https://gitcode.com/openharmony/graphic_graphic_2d) is the core rendering system that turns application UI state into pixels on screen. At a high level, it works like a client-server rendering architecture:
 
 ```text
 Application UI
