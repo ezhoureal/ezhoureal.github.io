@@ -42,6 +42,18 @@ body {
   letter-spacing: 0;
 }
 
+body,
+.page-content,
+.site-header,
+.site-footer {
+  background-color: var(--paper);
+}
+
+.wrapper {
+  box-sizing: border-box;
+  width: min(100%, 1184px);
+}
+
 a {
   color: var(--ink);
   text-decoration-color: var(--accent);
@@ -60,6 +72,8 @@ a:hover {
   border-bottom: 1px solid var(--rule);
   background: rgba(244, 241, 234, 0.92);
   backdrop-filter: blur(18px);
+  position: relative;
+  z-index: 10;
 }
 
 .site-header .wrapper {
@@ -69,6 +83,9 @@ a:hover {
 }
 
 .site-title {
+  display: inline-flex;
+  float: none;
+  align-items: center;
   color: var(--ink);
   font-size: 15px;
   font-weight: 800;
@@ -91,11 +108,13 @@ a:hover {
   font-size: 15px;
   font-weight: 900;
   text-transform: lowercase;
-  vertical-align: middle;
+  flex: 0 0 auto;
 }
 
 .site-nav {
+  float: none;
   margin-left: auto;
+  line-height: 1;
 }
 
 .site-nav .page-link {
@@ -107,11 +126,13 @@ a:hover {
 }
 
 .page-content {
+  flex: 1 0 auto;
   padding: 0 0 72px;
 }
 
 .home {
   padding-top: clamp(42px, 8vw, 96px);
+  min-height: auto;
 }
 
 .page-heading {
@@ -168,6 +189,10 @@ a:hover {
   margin-bottom: 12px;
 }
 
+.post-summary {
+  min-width: 0;
+}
+
 .post-link {
   display: inline;
   color: var(--ink);
@@ -193,12 +218,7 @@ a:hover {
 }
 
 .rss-subscribe {
-  margin-top: 28px;
-  color: var(--muted);
-  font-size: 13px;
-  font-weight: 800;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  display: none;
 }
 
 .post {
@@ -370,6 +390,16 @@ td {
   .site-title::before {
     width: 32px;
     height: 32px;
+  }
+
+  .page-heading {
+    font-size: clamp(44px, 16vw, 76px);
+    line-height: 0.94;
+  }
+
+  .post-title {
+    font-size: clamp(40px, 15vw, 70px);
+    line-height: 0.94;
   }
 
   .post-list > li {
