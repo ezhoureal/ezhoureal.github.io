@@ -283,7 +283,8 @@ These chained effect would require:
 - multi-pass rendering
 
 Rosen records the draw commands and shader invocations of all the drawables via `Drawing` API, which encapsulates drawing library of `Skia` on open source devices and a propreitary drawing library on commercial HarmonyOS devices. These libraries issue low-level commands to multiple backends, including `OpenGL` and `Vulkan`. `Vulkan` is the default path today, because it allows more direct control over the GPU hardware. The call path is illustrated below:
-[placeholder]()
+
+![Drawing API call path]({{ "/assets/drawingAPI.png" | relative_url }})
 
 ## Why Partial Rendering Matters
 
