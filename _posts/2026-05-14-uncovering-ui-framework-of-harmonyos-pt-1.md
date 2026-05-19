@@ -222,7 +222,7 @@ rs_surface_render_node.cpp
 
 Now the compositor has a fully updated scene graph representing all windows and surfaces in the system.
 
-## The Tree Optimizes Itself
+### The Tree Optimizes Itself
 
 The renderer aggressively optimizes the scene graph. The important thing to understand is:
 
@@ -286,7 +286,7 @@ Rosen records the draw commands and shader invocations of all the drawables via 
 
 ![Drawing API call path]({{ "/assets/drawingAPI.png" | relative_url }})
 
-## Why Partial Rendering Matters
+### Why Partial Rendering Matters
 
 Imagine an opacity animation of a small node on the screen.
 
@@ -385,7 +385,7 @@ UI layer
 
 This avoids expensive GPU blending for fullscreen video.
 
-## 3.3 Final Presentation
+## 3.3: Final Presentation
 
 Eventually:
 
