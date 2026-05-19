@@ -429,6 +429,14 @@ a:hover {
   transform: translateX(-50%);
 }
 
+.post-layout .post-content img {
+  width: 100%;
+  max-width: 100%;
+  margin-right: 0;
+  margin-left: 0;
+  transform: none;
+}
+
 .post-content ul,
 .post-content ol {
   margin-bottom: 28px;
@@ -660,6 +668,14 @@ td {
     max-width: 840px;
     margin-right: auto;
     margin-left: auto;
+  }
+
+  .post-layout .post-content img {
+    width: min(100vw - 32px, 1060px);
+    max-width: none;
+    margin-right: 50%;
+    margin-left: 50%;
+    transform: translateX(-50%);
   }
 
   .post-toc {
