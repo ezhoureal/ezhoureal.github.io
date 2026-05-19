@@ -343,14 +343,15 @@ a:hover {
 
 .post-toc__nav {
   display: grid;
-  gap: 9px;
+  gap: 10px;
 }
 
 .post-toc__link {
   display: block;
+  position: relative;
   color: var(--muted);
-  font-size: 13px;
-  font-weight: 750;
+  font-size: 14px;
+  font-weight: 850;
   line-height: 1.25;
   text-decoration: none;
 }
@@ -372,9 +373,25 @@ a:hover {
 }
 
 .post-toc__link--h3 {
-  padding-left: 14px;
+  margin-top: -2px;
+  padding-left: 28px;
+  color: color-mix(in srgb, var(--muted) 82%, var(--paper));
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 650;
+}
+
+.post-toc__link--h3::before {
+  content: "";
+  position: absolute;
+  left: 12px;
+  top: 0.65em;
+  width: 8px;
+  border-top: 1px solid var(--rule);
+}
+
+.post-toc__link--h3.is-active {
+  padding-left: 28px;
+  transform: none;
 }
 
 .post-content > p:first-of-type {
