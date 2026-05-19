@@ -206,12 +206,11 @@ Unlike many lightweight UI frameworks, the app process does not fully own render
 
 Inside Render Service, transactions mutate the authoritative render tree. This is where the retained scene graph truly lives.
 
-Key structures include:
+Key nodes include:
 
-- `RSNode`
-- `RSRenderNode`
-- `RSDisplayNode`
-- `RSSurfaceRenderNode`
+- `RSDisplayNode` - the root node of the whole tree
+- `RSRenderNode` - elementary nodes that draw actual UI content.
+- `RSSurfaceRenderNode` - the root nodes of each window that own actual render surfaces.
 
 Relevant code paths:
 
@@ -223,7 +222,7 @@ rs_surface_render_node.cpp
 
 Now the compositor has a fully updated scene graph representing all windows and surfaces in the system.
 
-## The Tree Is Not Just a Tree
+## The Tree Optimizes Itself
 
 The renderer aggressively optimizes the scene graph. The important thing to understand is:
 
@@ -237,22 +236,15 @@ The system continuously evaluates:
 - can redraws skip?
 - can effects batch?
 
-## Step 6: Drawables Are Generated
+## 2.2: Drawables Are Generated
 
 Eventually, nodes produce actual drawing commands. This is where the concept of a drawable becomes important.
-
-You will encounter systems such as:
-
-- `Drawable`
-- `DrawCmdList`
-- display lists
-- canvas drawing abstractions
 
 Conceptually:
 
 ```text
-RSNode
-    -> Generate Drawables
+RSNode parses its properties
+    -> Generate Corresponding Drawables
     -> Generate GPU draw commands
 ```
 
@@ -264,9 +256,7 @@ Examples include:
 - `ShadowDrawable`
 - `FilterDrawable`
 
-This is the stage where the renderer becomes increasingly Skia-like.
-
-## Step 7: Effects Become Render Passes
+## 2.3: Effects Become Render Passes
 
 Effects are first-class citizens in Rosen:
 
@@ -278,56 +268,39 @@ Effects are first-class citizens in Rosen:
 - shader effects
 - transitions
 
-Instead of treating them as special cases, Rosen models many effects directly in the render graph.
+Rosen models many effects directly in the render graph through `FilterDrawable`, which allows chaining multiple effects within a single draw pass. This is quite common in modern UI. For example,
 
 ```text
-EffectNode
+FilterDrawable
   -> Blur
   -> Brightness
   -> Saturation
 ```
 
-This is critical because effects often require:
-
+These chained effect would require:
 - offscreen render targets
 - intermediate textures
 - multi-pass rendering
 
-For example:
+Rosen records the draw commands and shader invocations of all the drawables via `Drawing` API, which encapsulates drawing library of `Skia` on open source devices and a propreitary drawing library on commercial HarmonyOS devices. These libraries issue low-level commands to multiple backends, including `OpenGL` and `Vulkan`. `Vulkan` is the default path today, because it allows more direct control over the GPU hardware. The call path is illustrated below:
+[placeholder]()
 
-```text
-Backdrop blur
-    -> capture background
-    -> downsample
-    -> blur pass
-    -> composite foreground
-```
+## Why Partial Rendering Matters
 
-Without a retained scene graph, this becomes extremely difficult to optimize.
+Imagine an opacity animation of a small node on the screen.
 
-## Why Retained Rendering Matters
-
-Imagine an opacity animation.
-
-Immediate rendering would require:
-
-```text
-rebuild entire scene
-repaint everything
-repeat every frame
-```
-
-Rosen instead does:
+Every animation frame, Rosen does:
 
 ```text
 update opacity property
-reuse cached subtree
-recompose only affected regions
+updates dirty nodes
+propagate dirty nodes to calculate dirty region
+reuse cached regions
+redraw dirty regions only
 ```
+Skipping cached regions save a lot of CPU and GPU cycles and keep the system performant.
 
-This is one reason advanced UI effects can remain smooth.
-
-## Step 8: VSync Scheduling
+## 2.4: VSync Scheduling
 
 Rendering is synchronized with display refresh. Render Service typically waits for VSync before committing composition.
 
@@ -371,7 +344,7 @@ property change
     -> presentation
 ```
 
-## Step 9: Surface Composition
+## 3.1: Surface Composition
 
 At this point, Render Service owns multiple surfaces:
 
@@ -386,12 +359,9 @@ The compositor decides:
 - GPU composition?
 - hardware overlay?
 - cached texture reuse?
-- partial redraw?
 - direct scanout?
 
-This resembles systems like Android SurfaceFlinger, Chromium Viz, and Wayland compositors.
-
-## Step 10: Hardware Composer
+## 3.2: Hardware Composer
 
 Eventually, composition reaches the hardware composer layer.
 
@@ -414,7 +384,7 @@ UI layer
 
 This avoids expensive GPU blending for fullscreen video.
 
-## Final Presentation
+## 3.3 Final Presentation
 
 Eventually:
 
@@ -433,11 +403,11 @@ And your original:
 
 finally becomes visible.
 
-## The Most Important Architectural Idea
+# Summary
 
 The most important insight in the Rosen architecture is this:
 
-> OpenHarmony separates UI semantics from rendering execution.
+> Rosen separates UI semantics from rendering execution.
 
 The stages are intentionally decoupled:
 
@@ -450,101 +420,14 @@ UI semantics
     -> presentation
 ```
 
-This separation enables:
+This separation enables features like:
 
 - partial redraw
-- retained rendering
-- advanced effects
+- advanced effects chaining
 - multi-window composition
 - distributed rendering
 - GPU batching
 - hardware overlays
 - efficient animations at system scale
 
-## Suggested Source Code Exploration Order
-
-If you want to understand Rosen deeply, this is a good traversal path through `graphic_graphic_2d`.
-
-### 1. Client-side node system
-
-```text
-render_service_client/core/ui/
-```
-
-Focus on:
-
-- `RSNode`
-- `RSCanvasNode`
-- `RSSurfaceNode`
-
-### 2. Transactions
-
-```text
-render_service_client/core/transaction/
-```
-
-Focus on:
-
-- `RSTransaction`
-- `RSCommand`
-- `transaction_proxy`
-
-### 3. Render pipeline
-
-```text
-render_service/core/pipeline/
-```
-
-Focus on:
-
-- `RSRenderNode`
-- `RSSurfaceRenderNode`
-- `RSUniRenderVisitor`
-
-### 4. Drawable system
-
-```text
-render_service/core/drawable/
-```
-
-### 5. VSync and frame scheduler
-
-```text
-render_service/core/
-vsync/
-frame_scheduler/
-```
-
-### 6. GPU backend integration
-
-Look for:
-
-- Skia
-- Vulkan
-- `GPUContext`
-- `Surface`
-- `RenderEngine`
-
-## Final Mental Model
-
-At the end of the day, Rosen is best understood as:
-
-```text
-A retained scene graph
-+ a transaction system
-+ a VSync-driven compositor
-+ a GPU/hardware composition engine
-```
-
-A simple UI property update is really:
-
-```text
-Mutation
-  -> Transaction
-  -> IPC
-  -> Scene graph update
-  -> Drawable generation
-  -> Composition
-  -> GPU submission
-  -> Display presentation
-```
+We will talk about these features in more details in future episodes.
