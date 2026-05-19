@@ -87,7 +87,7 @@ UI property change
     -> display scanout
 ```
 
-## 1.1: A Property Changes in ArkUI
+## 1.1 A Property Changes in ArkUI
 
 Imagine:
 
@@ -122,7 +122,7 @@ OpacityNode(opacity=0.5)
 
 This is extremely important: HarmonyOS prefers retained rendering over immediate rendering. The tree persists across frames, and only changed properties are updated.
 
-## 1.2: UI Nodes Become Render Nodes
+## 1.2 UI Nodes Become Render Nodes
 
 ArkUI components are semantic objects:
 
@@ -152,7 +152,7 @@ RSCanvasNode
 
 This transformation from semantic UI tree to render tree with a list of drawables, is one of the most important ideas in the pipeline.
 
-## 1.3: Transactions Are Generated
+## 1.3 Transactions Are Generated
 
 This is where Rosen becomes interesting.
 
@@ -202,7 +202,7 @@ Render Service Process
 
 Unlike many lightweight UI frameworks, the app process does not fully own rendering. The app submits scene updates. Render Service owns composition. This architecture makes multi-window animations and incremental redraws much easier to control and more efficient.
 
-## 2.1: Render Service Updates the Scene Graph
+## 2.1 Render Service Updates the Scene Graph
 
 Inside Render Service, transactions mutate the authoritative render tree. This is where the retained scene graph truly lives.
 
@@ -236,7 +236,7 @@ The system continuously evaluates:
 - can redraws skip?
 - can effects batch?
 
-## 2.2: Drawables Are Generated
+## 2.2 Drawables Are Generated
 
 Eventually, nodes produce actual drawing commands. This is where the concept of a drawable becomes important.
 
@@ -256,7 +256,7 @@ Examples include:
 - `ShadowDrawable`
 - `FilterDrawable`
 
-## 2.3: Effects Become Render Passes
+## 2.3 Effects Become Render Passes
 
 Effects are first-class citizens in Rosen:
 
@@ -301,7 +301,7 @@ redraw dirty regions only
 ```
 Skipping cached regions save a lot of CPU and GPU cycles and keep the system performant.
 
-## 2.4: VSync Scheduling
+## 2.4 VSync Scheduling
 
 Rendering is synchronized with display refresh. Render Service typically waits for VSync before committing composition.
 
@@ -345,7 +345,7 @@ property change
     -> presentation
 ```
 
-## 3.1: Surface Composition
+## 3.1 Surface Composition
 
 At this point, Render Service owns multiple surfaces:
 
@@ -362,7 +362,7 @@ The compositor decides:
 - cached texture reuse?
 - direct scanout?
 
-## 3.2: Hardware Composer
+## 3.2 Hardware Composer
 
 Eventually, composition reaches the hardware composer layer.
 
@@ -385,7 +385,7 @@ UI layer
 
 This avoids expensive GPU blending for fullscreen video.
 
-## 3.3: Final Presentation
+## 3.3 Final Presentation
 
 Eventually:
 
@@ -404,7 +404,7 @@ And your original:
 
 finally becomes visible.
 
-# Summary
+## Summary
 
 The most important insight in the Rosen architecture is this:
 
