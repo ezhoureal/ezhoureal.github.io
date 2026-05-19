@@ -379,6 +379,24 @@ pre,
   background: var(--code-bg);
 }
 
+pre.highlight,
+.highlight pre,
+.highlighter-rouge .highlight {
+  background: var(--code-bg);
+  color: var(--code-fg);
+}
+
+.highlight code,
+.highlight pre code,
+.highlight span {
+  color: inherit;
+}
+
+.highlight .err {
+  background: transparent;
+  color: inherit;
+}
+
 pre {
   padding: 22px;
   border-left: 5px solid var(--accent);
