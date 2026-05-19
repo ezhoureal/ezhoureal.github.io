@@ -50,7 +50,7 @@ Text("Hello")
   .opacity(0.5)
 ```
 
-it feels immediate. Internally, the framework launches a sophisticated pipeline involving:
+Internally, the framework launches a sophisticated pipeline involving:
 
 - UI tree mutation
 - render tree transactions
@@ -87,7 +87,7 @@ UI property change
     -> display scanout
 ```
 
-## Step 1: A Property Changes in ArkUI
+## 1.1: A Property Changes in ArkUI
 
 Imagine:
 
@@ -122,7 +122,7 @@ OpacityNode(opacity=0.5)
 
 This is extremely important: HarmonyOS prefers retained rendering over immediate rendering. The tree persists across frames, and only changed properties are updated.
 
-## Step 2: UI Nodes Become Render Nodes
+## 1.2: UI Nodes Become Render Nodes
 
 ArkUI components are semantic objects:
 
@@ -132,21 +132,7 @@ ArkUI components are semantic objects:
 - `Column`
 - `List`
 
-But the renderer does not understand a `Button` as a semantic UI component. The framework converts UI components into lower-level rendering primitives. Internally, these eventually become various Rosen nodes:
-
-- `RSNode`
-- `RSCanvasNode`
-- `RSRootNode`
-- `RSSurfaceNode`
-- `RSEffectNode`
-
-Typical code paths in `graphic_graphic_2d`:
-
-```text
-rosen/modules/render_service_client/core/ui/
-```
-
-These nodes form the retained render tree.
+The framework converts UI components into lower-level rendering primitives. Internally, these eventually become `RSCanvasNode`.
 
 Conceptually:
 
@@ -164,25 +150,13 @@ RSCanvasNode
   -> FilterDrawable
 ```
 
-This transformation from semantic UI tree to render tree, and then to drawable tree, is one of the most important ideas in the pipeline.
+This transformation from semantic UI tree to render tree with a list of drawables, is one of the most important ideas in the pipeline.
 
-## Step 3: Transactions Are Generated
+## 1.3: Transactions Are Generated
 
 This is where Rosen becomes interesting.
 
-Instead of sending entire trees every frame, OpenHarmony sends transactions. A transaction is essentially:
-
-```text
-These properties changed on these nodes.
-```
-
-It is not:
-
-```text
-Rebuild the whole scene.
-```
-
-This dramatically reduces IPC cost.
+Instead of sending entire trees every frame, the framework sends incremental transactions to dramatically reduces IPC cost.
 
 Typical mutation operations include:
 
@@ -218,11 +192,7 @@ Node #81:
     blurRadius = 32
 ```
 
-These updates are serialized and sent to Render Service.
-
-## Step 4: IPC to Render Service
-
-One defining characteristic of Rosen is that rendering is largely centralized in a separate process.
+These updates are serialized and sent to Render Service, a separate process. One defining characteristic of Rosen is that rendering is largely centralized in a separate process.
 
 ```text
 Application Process
@@ -230,27 +200,9 @@ Application Process
 Render Service Process
 ```
 
-Unlike many lightweight UI frameworks, the app process does not fully own rendering. The app submits scene updates. Render Service owns composition.
+Unlike many lightweight UI frameworks, the app process does not fully own rendering. The app submits scene updates. Render Service owns composition. This architecture makes multi-window animations and incremental redraws much easier to control and more efficient.
 
-Transport may involve:
-
-- shared memory
-- command buffers
-- IPC parcels
-- Unix domain sockets
-- binder-like transport abstractions
-
-Conceptually:
-
-```text
-Application:
-    "Node 42 opacity changed."
-
-Render Service:
-    "Got it. I'll apply it at next VSync."
-```
-
-## Step 5: Render Service Updates the Scene Graph
+## 2.1: Render Service Updates the Scene Graph
 
 Inside Render Service, transactions mutate the authoritative render tree. This is where the retained scene graph truly lives.
 
@@ -313,42 +265,6 @@ Examples include:
 - `FilterDrawable`
 
 This is the stage where the renderer becomes increasingly Skia-like.
-
-## Relationship to Skia
-
-Rosen strongly resembles modern retained-mode renderers built on top of Skia concepts. The effective pipeline often looks like this:
-
-```text
-RSNode tree
-    -> DisplayList
-    -> SkCanvas
-    -> GPU backend
-```
-
-Backends may include:
-
-- Vulkan
-- OpenGL ES
-- platform-specific graphics abstractions
-
-Graphics engineers working in Rosen frequently interact with:
-
-- Skia integration
-- display lists
-- GPU surfaces
-- render passes
-- texture management
-- batching systems
-
-A simple widget can expand into many GPU operations:
-
-```text
-OpacityNode
-    -> RoundedRectDrawable
-    -> ShadowDrawable
-    -> TextDrawable
-    -> GPU draw calls
-```
 
 ## Step 7: Effects Become Render Passes
 
