@@ -394,13 +394,6 @@ a:hover {
   transform: none;
 }
 
-.post-content > p:first-of-type {
-  color: var(--ink);
-  font-size: clamp(23px, 3vw, 34px);
-  font-weight: 750;
-  line-height: 1.16;
-}
-
 .post-content h2 {
   margin-top: 72px;
   margin-bottom: 18px;

@@ -5,11 +5,11 @@ date: 2026-05-14 20:55:00 +0800
 categories: harmonyos rendering
 ---
 
-After working on the open source foundation of HarmonyOS for nearly four years, and seeing the OS launch, ship, and climb from zero to tens of millions of users, I think it is time to unpack the design and optimization work behind the system.
+After working on the open source foundation of HarmonyOS for nearly four years, and seeing the OS launch, ship, and climb from 0 to 60M+ users, I think it is time to unpack the design and optimization work behind the system.
 
 This series starts with the core rendering layer: Rosen Render Service.
 
-Rosen is one of the reasons HarmonyOS can deliver smooth animations and responsive UI even on devices with weaker hardware than contemporary flagship Android and iOS devices. It is the layer where abstract UI state becomes a scheduled, optimized, hardware-aware frame.
+Rosen is one of the reasons HarmonyOS can deliver smooth animations and responsive UI even on devices with much weaker hardware comparing to flagship Android and iOS devices. It is the layer where abstract UI state becomes a scheduled, optimized, hardware-aware frame.
 
 ## Overview
 
@@ -282,7 +282,7 @@ These chained effect would require:
 - intermediate textures
 - multi-pass rendering
 
-Rosen records the draw commands and shader invocations of all the drawables via `Drawing` API, which encapsulates drawing library of `Skia` on open source devices and a propreitary drawing library on commercial HarmonyOS devices. These libraries issue low-level commands to multiple backends, including `OpenGL` and `Vulkan`. `Vulkan` is the default path today, because it allows more direct control over the GPU hardware. The call path is illustrated below:
+Rosen records the draw commands and shader invocations of all the drawables via `Drawing` API, which encapsulates drawing library of `Skia` on open source devices and a proprietary drawing library on commercial HarmonyOS devices. These libraries issue low-level commands to multiple backends, including `OpenGL` and `Vulkan`. `Vulkan` is the default path today, because it allows more direct control over the GPU hardware. The call path is illustrated below:
 
 ![Drawing API call path]({{ "/assets/drawingAPI.png" | relative_url }})
 
