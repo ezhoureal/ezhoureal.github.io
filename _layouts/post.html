@@ -1,0 +1,105 @@
+---
+layout: default
+---
+
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">{{ page.title | escape }}</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">
+        {%- assign date_format = site.minima.date_format | default: "%b %-d, %Y" -%}
+        {{ page.date | date: date_format }}
+      </time>
+      {%- if page.author -%}
+        <span itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <span class="p-author h-card" itemprop="name">{{ page.author }}</span>
+        </span>
+      {%- endif -%}
+    </p>
+  </header>
+
+  <div class="post-layout">
+    <div class="post-content e-content" itemprop="articleBody">
+      {{ content }}
+    </div>
+
+    <aside class="post-toc" aria-label="Article outline" hidden>
+      <div class="post-toc__title">Outline</div>
+      <nav class="post-toc__nav"></nav>
+    </aside>
+  </div>
+
+  <a class="u-url" href="{{ page.url | relative_url }}" hidden></a>
+</article>
+
+<script>
+  (() => {
+    const content = document.querySelector(".post-content");
+    const toc = document.querySelector(".post-toc");
+    const nav = document.querySelector(".post-toc__nav");
+
+    if (!content || !toc || !nav) {
+      return;
+    }
+
+    const headings = [...content.querySelectorAll("h2, h3")];
+
+    if (!headings.length) {
+      return;
+    }
+
+    const usedIds = new Set();
+    const slugify = (text) => text
+      .toLowerCase()
+      .trim()
+      .replace(/[^a-z0-9\s-]/g, "")
+      .replace(/\s+/g, "-")
+      .replace(/-+/g, "-")
+      .replace(/^-|-$/g, "");
+
+    headings.forEach((heading) => {
+      let id = heading.id || slugify(heading.textContent) || "section";
+      const baseId = id;
+      let index = 2;
+
+      while (usedIds.has(id)) {
+        id = `${baseId}-${index}`;
+        index += 1;
+      }
+
+      heading.id = id;
+      usedIds.add(id);
+
+      const link = document.createElement("a");
+      link.className = `post-toc__link post-toc__link--${heading.tagName.toLowerCase()}`;
+      link.href = `#${id}`;
+      link.textContent = heading.textContent;
+      nav.appendChild(link);
+    });
+
+    toc.hidden = false;
+
+    const links = [...nav.querySelectorAll("a")];
+    const markActive = (id) => {
+      links.forEach((link) => {
+        link.classList.toggle("is-active", link.hash === `#${id}`);
+      });
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      const visible = entries
+        .filter((entry) => entry.isIntersecting)
+        .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+
+      if (visible[0]) {
+        markActive(visible[0].target.id);
+      }
+    }, {
+      rootMargin: "-20% 0px -65%",
+      threshold: 0.01
+    });
+
+    headings.forEach((heading) => observer.observe(heading));
+    markActive(headings[0].id);
+  })();
+</script>
