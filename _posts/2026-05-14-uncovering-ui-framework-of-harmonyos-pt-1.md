@@ -11,11 +11,11 @@ This series starts with the core rendering layer: Rosen Render Service.
 
 Rosen is one of the reasons HarmonyOS can deliver smooth animations and responsive UI even on devices with weaker hardware than contemporary flagship Android and iOS devices. It is the layer where abstract UI state becomes a scheduled, optimized, hardware-aware frame.
 
-![Rosen render service pipeline]({{ "/render_service_diagram.png" | relative_url }})
-
 ## Overview
 
 OpenHarmony's [Rosen library](https://gitcode.com/openharmony/graphic_graphic_2d) is the core rendering system that turns application UI state into pixels on screen. At a high level, it works like a client-server rendering architecture:
+
+![Rosen render service pipeline]({{ "/render_service_diagram.png" | relative_url }})
 
 ```text
 Application UI
