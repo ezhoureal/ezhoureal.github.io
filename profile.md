@@ -8,7 +8,7 @@ permalink: /profile/
   <div class="resume-header">
     <div>
       <h1 class="resume-name">Tianer Zhou</h1>
-      <p class="resume-role">Graphics Engineer • HarmonyOS Foundation, Huawei</p>
+      <p class="resume-role">Graphics Engineer • OpenHarmony, Huawei</p>
     </div>
 
     <div class="resume-contact">
@@ -21,7 +21,7 @@ permalink: /profile/
   </div>
 
   <p class="resume-intro">
-    I work on the graphics and UI foundations of HarmonyOS at Huawei. My focus is building fast, reliable rendering and interface systems that run on tens of millions of devices.
+    I work on the open-source graphics and UI foundations of HarmonyOS at Huawei. My focus is building performant, reliable rendering systems that run on millions of devices.
   </p>
 
   <section class="resume-section">
@@ -31,7 +31,7 @@ permalink: /profile/
         <strong>University of Michigan, Ann Arbor</strong>
         <span class="resume-date">2019 — 2022</span>
       </div>
-      <div class="resume-entry-sub">B.S. Computer Science, <em>Summa Cum Laude</em></div>
+      <div class="resume-entry-sub">B.S.E. Computer Science, <em>Summa Cum Laude</em></div>
       <p>Projects: deveoped basic OS kernel (threads, virtual memory, file system), implemented Paxos and sharded workers, and created a PID-controlled Arduino drone that placed in the top 5% of the course.</p>
     </div>
   </section>

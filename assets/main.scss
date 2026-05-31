@@ -140,19 +140,16 @@ a:hover {
 }
 
 .site-title::before {
-  content: "tz";
-  display: inline-grid;
-  place-items: center;
+  content: "";
+  display: inline-block;
   width: 36px;
   height: 36px;
   margin-right: 12px;
-  border: 1px solid var(--ink);
   border-radius: 50%;
-  background: var(--ink);
-  color: var(--paper);
-  font-size: 15px;
-  font-weight: 900;
-  text-transform: lowercase;
+  background-image: url('/assets/avatar.png');
+  background-size: cover;
+  background-position: center;
+  box-shadow: 0 0 0 1px var(--ink);
   flex: 0 0 auto;
 }
 
