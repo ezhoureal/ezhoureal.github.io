@@ -1,6 +1,4 @@
-# Technical Notes
-
-Jekyll-based technical blog for GitHub Pages.
+# My personal webpage
 
 ## Local preview
 
