@@ -1,0 +1,15 @@
+<div class="site-header">
+  <div class="wrapper">
+    <a class="site-title" rel="author" href="{{ "/" | relative_url }}">
+      {{ site.title | escape }}
+    </a>
+
+    <nav class="site-nav" aria-label="Primary navigation">
+      <div class="nav-links">
+        <a href="{{ '/' | relative_url }}" class="page-link{% if page.url == '/' %} is-active{% endif %}"{% if page.url == '/' %} aria-current="page"{% endif %}>Home</a>
+        <a href="{{ '/profile/' | relative_url }}" class="page-link{% if page.url contains '/profile' %} is-active{% endif %}"{% if page.url contains '/profile' %} aria-current="page"{% endif %}>Profile</a>
+        <a href="{{ '/blog/' | relative_url }}" class="page-link{% if page.url contains '/blog' or page.url contains '/20' %} is-active{% endif %}"{% if page.url contains '/blog' or page.url contains '/20' %} aria-current="page"{% endif %}>Blog</a>
+      </div>
+    </nav>
+  </div>
+</div>

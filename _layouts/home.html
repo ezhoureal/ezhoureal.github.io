@@ -3,31 +3,48 @@ layout: default
 ---
 
 <div class="home">
-  {%- if page.title -%}
-    <h1 class="page-heading">{{ page.title }}</h1>
-  {%- endif -%}
+  <div class="hero">
+    <div class="hero-mono">HANGZHOU, CHINA</div>
+    <h1 class="hero-title">Tianer Zhou</h1>
+    <p class="hero-subtitle">Graphics Engineer at Huawei • Building the foundations of HarmonyOS</p>
 
-  {{ content }}
+    <div class="hero-meta">
+      <span>University of Michigan CS ’22 • Summa Cum Laude</span>
+    </div>
 
-  {%- if site.posts.size > 0 -%}
-    <h2 class="post-list-heading">{{ page.list_title | default: "Posts" }}</h2>
-    <ul class="post-list">
-      {%- for post in site.posts -%}
-      <li>
-        {%- assign date_format = site.minima.date_format | default: "%b %-d, %Y" -%}
-        <span class="post-meta">{{ post.date | date: date_format }}</span>
-        <div class="post-summary">
-          <h3>
-            <a class="post-link" href="{{ post.url | relative_url }}">
-              {{ post.title | escape }}
-            </a>
-          </h3>
-          {%- if site.show_excerpts -%}
-            {{ post.excerpt }}
-          {%- endif -%}
-        </div>
-      </li>
-      {%- endfor -%}
-    </ul>
-  {%- endif -%}
+    <div class="hero-actions">
+      <a href="/profile/" class="btn btn-primary">View Profile</a>
+      <a href="/blog/" class="btn btn-secondary">Read the Blog</a>
+      <a href="https://github.com/ezhoureal" class="btn btn-ghost" target="_blank" rel="noopener">GitHub</a>
+    </div>
+
+    <p class="hero-intro">
+      I work on the graphics and UI foundations of HarmonyOS at Huawei.
+      Previously at the University of Michigan I built kernels and distributed systems, and learned to make things fast.
+      I write about rendering, compilers, ML infrastructure, and the details of shipping real systems.
+    </p>
+  </div>
+
+  <div class="home-highlights">
+    <div class="highlight-block">
+      <div class="highlight-label">Currently</div>
+      <div class="highlight-text">
+        Graphics Foundation &amp; UI Framework for HarmonyOS (25M+ devices, 20k+ apps).<br>
+        Exploring learning-based rendering and on-device 3D generation.
+      </div>
+    </div>
+
+    <div class="highlight-block">
+      <div class="highlight-label">Recent writing</div>
+      <ul class="home-post-list">
+        {%- for post in site.posts limit:3 -%}
+        <li>
+          <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+          <span class="home-post-date">{{ post.date | date: "%b %Y" }}</span>
+        </li>
+        {%- endfor -%}
+      </ul>
+      <a href="/blog/" class="home-more">All posts →</a>
+    </div>
+  </div>
 </div>

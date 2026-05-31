@@ -1,5 +1,5 @@
-title: zireael
-description: Welcome to my blog
+title: Tianer Zhou
+description: Graphics engineer working on HarmonyOS at Huawei. Writing about systems, rendering, and ML.
 url: "https://ezhoureal.github.io"
 baseurl: ""
 author: Tianer Zhou
@@ -14,11 +14,11 @@ highlighter: rouge
 permalink: /:year/:month/:day/:title/
 
 show_excerpts: true
-header_pages:
-  - about.md
 
 minima:
   skin: auto
   social_links:
     - platform: github
       user_url: "https://github.com/ezhoureal"
+    - platform: linkedin
+      user_url: "https://www.linkedin.com/in/tianer-zhou/"

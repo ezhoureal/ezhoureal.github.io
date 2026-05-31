@@ -1,4 +1,4 @@
 ---
 layout: home
-title: Tianer's Blog
+title: Tianer Zhou
 ---
