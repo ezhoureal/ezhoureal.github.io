@@ -16,7 +16,7 @@ permalink: /profile/
       <a href="https://www.linkedin.com/in/tianer-zhou/" target="_blank" rel="noopener">LinkedIn</a>
       <a href="https://github.com/ezhoureal" target="_blank" rel="noopener">GitHub</a>
       <span class="resume-location">Hangzhou, China</span>
-      <button onclick="window.print()" class="resume-print">Print / PDF</button>
+      <a href="/assets/resume.pdf" class="resume-print" target="_blank" rel="noopener">Print / PDF</a>
     </div>
   </div>
 

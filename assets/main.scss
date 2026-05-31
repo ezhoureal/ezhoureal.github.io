@@ -1036,7 +1036,7 @@ td {
   margin-top: 4px;
 }
 
-.resume-print {
+.resume-contact .resume-print {
   all: unset;
   cursor: pointer;
   color: var(--accent-strong);
@@ -1045,7 +1045,7 @@ td {
   margin-top: 2px;
 }
 
-.resume-print:hover {
+.resume-contact .resume-print:hover {
   text-decoration: underline;
 }
 
