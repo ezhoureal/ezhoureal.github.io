@@ -866,13 +866,13 @@ td {
   border-color: var(--ink);
 }
 
-.btn-primary {
+.btn.btn-primary {
   background: var(--ink);
   color: var(--paper);
   border-color: var(--ink);
 }
 
-.btn-primary:hover {
+.btn.btn-primary:hover {
   background: var(--accent-strong);
   border-color: var(--accent-strong);
   color: white;
