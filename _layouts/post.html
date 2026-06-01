@@ -117,13 +117,11 @@ layout: default
     lightbox.className = "post-image-lightbox";
     lightbox.hidden = true;
     lightbox.innerHTML = `
-      <button class="post-image-lightbox__close" type="button" aria-label="Close enlarged image">&times;</button>
       <img class="post-image-lightbox__image" alt="">
     `;
     document.body.appendChild(lightbox);
 
     const lightboxImage = lightbox.querySelector(".post-image-lightbox__image");
-    const closeButton = lightbox.querySelector(".post-image-lightbox__close");
     const minScale = 1;
     const maxScale = 4;
     let imageScale = minScale;
@@ -149,7 +147,6 @@ layout: default
       setImageScale(minScale);
       lightbox.hidden = false;
       document.body.classList.add("has-post-image-lightbox");
-      closeButton.focus({ preventScroll: true });
     };
 
     images.forEach((image) => {
@@ -167,16 +164,13 @@ layout: default
       });
     });
 
-    closeButton.addEventListener("click", close);
     lightboxImage.addEventListener("wheel", (event) => {
       event.preventDefault();
       const direction = event.deltaY > 0 ? -1 : 1;
       setImageScale(imageScale + direction * 0.2);
     }, { passive: false });
-    lightbox.addEventListener("click", (event) => {
-      if (event.target === lightbox) {
-        close();
-      }
+    lightbox.addEventListener("click", () => {
+      close();
     });
     document.addEventListener("keydown", (event) => {
       if (event.key === "Escape" && !lightbox.hidden) {
