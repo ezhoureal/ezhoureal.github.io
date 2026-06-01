@@ -21,7 +21,7 @@ permalink: /profile/
   </div>
 
   <p class="resume-intro">
-    I work on the open-source graphics and UI foundations of HarmonyOS at Huawei. My focus is building performant, reliable rendering systems that run on millions of devices.
+    I work on the open-source graphics and UI foundations of HarmonyOS at Huawei. My focus is building high-performance, reliable rendering systems that enrich millions of consumers.
   </p>
 
   <section class="resume-section">
@@ -44,13 +44,13 @@ permalink: /profile/
         <strong>Huawei Technologies</strong>
         <span class="resume-date">2022 — Present</span>
       </div>
-      <div class="resume-entry-sub">Graphics Engineer, HarmonyOS Graphics Foundation</div>
-      <p>Worked on the rendering stack now shipping on 25M+ devices. Developed visual-effect shaders and automated parameter search methods that improved performance up to 10% in production shaders. Explored on-device 3D Gaussian rendering and lightweight generative models for mobile.</p>
+      <div class="resume-entry-sub">Graphics Engineer, <a href="https://gitcode.com/openharmony">HarmonyOS Graphics Foundation</a></div>
+      <p>Worked on the rendering stack now running on 60M+ Huawei phones. Developed visual-effect shaders and automated parameter search framework that improved performance up to 10% in production shaders. Exploring on-device 3D Gaussian rendering and lightweight generative models for mobile.</p>
     </div>
 
     <div class="resume-entry">
-      <div class="resume-entry-sub">UI Framework Engineer, native UI framework</div>
-      <p>Core contributor (1,200+ commits, #1 out of 1,300+) to the open-source UI engine that powers 20,000+ HarmonyOS apps. Built high-performance scroll containers that reduced jank by 60%, a production image loader, and a React Native SVG renderer 20% faster than the Android reference.</p>
+      <div class="resume-entry-sub">UI Framework Engineer, <a href="https://gitcode.com/openharmony/arkui_ace_engine">ArkUI of HarmonyOS</a></div>
+      <p>Core contributor (1,200+ commits) to the open-source UI engine that powers 20,000+ HarmonyOS apps. Built high-performance scroll containers that reduced jank rate by 60%, a production image loader, and a React Native SVG renderer 20% faster than the Android reference.</p>
     </div>
   </section>
 
