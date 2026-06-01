@@ -124,17 +124,29 @@ layout: default
 
     const lightboxImage = lightbox.querySelector(".post-image-lightbox__image");
     const closeButton = lightbox.querySelector(".post-image-lightbox__close");
+    const minScale = 1;
+    const maxScale = 4;
+    let imageScale = minScale;
+
+    const setImageScale = (scale) => {
+      imageScale = Math.min(maxScale, Math.max(minScale, scale));
+      lightboxImage.style.setProperty("--post-lightbox-image-scale", imageScale);
+      lightbox.classList.toggle("is-zoomed", imageScale > minScale);
+    };
 
     const close = () => {
       lightbox.hidden = true;
       lightboxImage.removeAttribute("src");
       lightboxImage.alt = "";
+      lightboxImage.style.removeProperty("--post-lightbox-image-scale");
+      lightbox.classList.remove("is-zoomed");
       document.body.classList.remove("has-post-image-lightbox");
     };
 
     const open = (image) => {
       lightboxImage.src = image.currentSrc || image.src;
       lightboxImage.alt = image.alt || "Enlarged blog post image";
+      setImageScale(minScale);
       lightbox.hidden = false;
       document.body.classList.add("has-post-image-lightbox");
       closeButton.focus({ preventScroll: true });
@@ -156,6 +168,11 @@ layout: default
     });
 
     closeButton.addEventListener("click", close);
+    lightboxImage.addEventListener("wheel", (event) => {
+      event.preventDefault();
+      const direction = event.deltaY > 0 ? -1 : 1;
+      setImageScale(imageScale + direction * 0.2);
+    }, { passive: false });
     lightbox.addEventListener("click", (event) => {
       if (event.target === lightbox) {
         close();

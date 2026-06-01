@@ -439,7 +439,7 @@ a:hover {
 }
 
 .post-layout .post-content img {
-  --post-image-transform: none;
+  --post-image-transform: translateX(0);
 
   width: 100%;
   max-width: 100%;
@@ -454,11 +454,11 @@ a:hover {
   transform-origin: center;
 }
 
-.post-content__zoomable-image:hover {
+.post-content .post-content__zoomable-image:hover {
   transform: var(--post-image-transform) scale(1.05);
 }
 
-.post-content__zoomable-image:focus-visible {
+.post-content .post-content__zoomable-image:focus-visible {
   outline: 3px solid var(--accent);
   outline-offset: 6px;
 }
@@ -483,6 +483,8 @@ a:hover {
 }
 
 .post-image-lightbox__image {
+  --post-lightbox-image-scale: 1;
+
   display: block;
   width: auto;
   max-width: min(100%, 1440px);
@@ -490,7 +492,14 @@ a:hover {
   border: 1px solid rgba(255, 255, 255, 0.22);
   background: #ffffff;
   box-shadow: 0 24px 80px rgba(0, 0, 0, 0.5);
-  cursor: default;
+  cursor: zoom-in;
+  transform: scale(var(--post-lightbox-image-scale));
+  transform-origin: center;
+  transition: transform 120ms ease;
+}
+
+.post-image-lightbox.is-zoomed .post-image-lightbox__image {
+  cursor: zoom-out;
 }
 
 .post-image-lightbox__close {
@@ -812,7 +821,7 @@ td {
   }
 
   .post-content img {
-    --post-image-transform: none;
+    --post-image-transform: translateX(0);
 
     width: 100%;
     margin-right: 0;
