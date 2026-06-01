@@ -102,4 +102,69 @@ layout: default
     headings.forEach((heading) => observer.observe(heading));
     markActive(headings[0].id);
   })();
+
+  (() => {
+    const content = document.querySelector(".post-content");
+    const images = content
+      ? [...content.querySelectorAll("img")].filter((image) => !image.closest("a"))
+      : [];
+
+    if (!images.length) {
+      return;
+    }
+
+    const lightbox = document.createElement("div");
+    lightbox.className = "post-image-lightbox";
+    lightbox.hidden = true;
+    lightbox.innerHTML = `
+      <button class="post-image-lightbox__close" type="button" aria-label="Close enlarged image">&times;</button>
+      <img class="post-image-lightbox__image" alt="">
+    `;
+    document.body.appendChild(lightbox);
+
+    const lightboxImage = lightbox.querySelector(".post-image-lightbox__image");
+    const closeButton = lightbox.querySelector(".post-image-lightbox__close");
+
+    const close = () => {
+      lightbox.hidden = true;
+      lightboxImage.removeAttribute("src");
+      lightboxImage.alt = "";
+      document.body.classList.remove("has-post-image-lightbox");
+    };
+
+    const open = (image) => {
+      lightboxImage.src = image.currentSrc || image.src;
+      lightboxImage.alt = image.alt || "Enlarged blog post image";
+      lightbox.hidden = false;
+      document.body.classList.add("has-post-image-lightbox");
+      closeButton.focus({ preventScroll: true });
+    };
+
+    images.forEach((image) => {
+      image.classList.add("post-content__zoomable-image");
+      image.tabIndex = 0;
+      image.setAttribute("role", "button");
+      image.setAttribute("aria-label", image.alt ? `Enlarge image: ${image.alt}` : "Enlarge image");
+
+      image.addEventListener("click", () => open(image));
+      image.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          open(image);
+        }
+      });
+    });
+
+    closeButton.addEventListener("click", close);
+    lightbox.addEventListener("click", (event) => {
+      if (event.target === lightbox) {
+        close();
+      }
+    });
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && !lightbox.hidden) {
+        close();
+      }
+    });
+  })();
 </script>

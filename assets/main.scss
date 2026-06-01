@@ -427,21 +427,93 @@ a:hover {
 }
 
 .post-content img {
+  --post-image-transform: translateX(-50%);
+
   display: block;
   width: min(100vw - 32px, 1060px);
   max-width: none;
   margin: 42px 50% 48px;
   border: 1px solid var(--image-border);
   box-shadow: 12px 12px 0 var(--image-shadow);
-  transform: translateX(-50%);
+  transform: var(--post-image-transform);
 }
 
 .post-layout .post-content img {
+  --post-image-transform: none;
+
   width: 100%;
   max-width: 100%;
   margin-right: 0;
   margin-left: 0;
-  transform: none;
+  transform: var(--post-image-transform);
+}
+
+.post-content__zoomable-image {
+  cursor: zoom-in;
+  transition: transform 160ms ease, box-shadow 160ms ease;
+  transform-origin: center;
+}
+
+.post-content__zoomable-image:hover {
+  transform: var(--post-image-transform) scale(1.05);
+}
+
+.post-content__zoomable-image:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 6px;
+}
+
+.has-post-image-lightbox {
+  overflow: hidden;
+}
+
+.post-image-lightbox {
+  position: fixed;
+  z-index: 1000;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: clamp(18px, 4vw, 48px);
+  background: rgba(0, 0, 0, 0.84);
+  cursor: zoom-out;
+}
+
+.post-image-lightbox[hidden] {
+  display: none;
+}
+
+.post-image-lightbox__image {
+  display: block;
+  width: auto;
+  max-width: min(100%, 1440px);
+  max-height: 90vh;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: #ffffff;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.5);
+  cursor: default;
+}
+
+.post-image-lightbox__close {
+  position: fixed;
+  top: 18px;
+  right: 18px;
+  z-index: 1;
+  width: 44px;
+  height: 44px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.55);
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 30px;
+  line-height: 1;
+}
+
+.post-image-lightbox__close:hover,
+.post-image-lightbox__close:focus-visible {
+  border-color: #ffffff;
+  background: #ffffff;
+  color: #111111;
 }
 
 .post-content ul,
@@ -678,11 +750,13 @@ td {
   }
 
   .post-layout .post-content img {
+    --post-image-transform: translateX(-50%);
+
     width: min(100vw - 32px, 1060px);
     max-width: none;
     margin-right: 50%;
     margin-left: 50%;
-    transform: translateX(-50%);
+    transform: var(--post-image-transform);
   }
 
   .post-toc {
@@ -738,11 +812,13 @@ td {
   }
 
   .post-content img {
+    --post-image-transform: none;
+
     width: 100%;
     margin-right: 0;
     margin-left: 0;
     box-shadow: 7px 7px 0 var(--ink);
-    transform: none;
+    transform: var(--post-image-transform);
   }
 }
 
