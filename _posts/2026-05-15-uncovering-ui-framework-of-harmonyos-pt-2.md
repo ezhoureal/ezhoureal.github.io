@@ -13,9 +13,9 @@ The engine behind it lives in the [arkui_ace_engine](https://gitcode.com/openhar
 
 The declarative layer in ArkUI is deliberately **very thin**. High-level ArkTS (or TypeScript/JavaScript) syntax is transpiled at build time into imperative code that drives a small set of native hooks. The overwhelming majority of work—component creation, tree management, layout, rendering, property updates, and event handling—executes in highly optimized C++.
 
-This is a conscious performance decision. Even with modern JavaScript engines and JIT/AOT compilation, staying in native code for the hot paths (especially per-frame work) is dramatically more efficient. In cross-platform scenarios on iOS, ArkUI's component creation and layout times have measured around 10% of the cost of equivalent native SwiftUI work in some benchmarks. The gap comes from avoiding JS object churn, direct bridging into C++, and aggressive dirty-flag-based incremental updates.
+This is a conscious performance decision. Even with modern JavaScript engines and JIT/AOT compilation, staying in native code for the hot paths (especially per-frame work) is dramatically more efficient. When running cross-platform on iOS, ArkUI's component creation and layout times have consistently outperformed SwiftUI counterpart by 10%. The performance comes from avoiding JS object churn, direct bridging into C++, and node-level incremental updates.
 
-### Before transpilation (what you write)
+## Before transpilation (what you write)
 
 ```arkts
 Column() {
@@ -28,7 +28,7 @@ Column() {
 }
 ```
 
-### After transpilation (what actually runs)
+## After transpilation (what actually runs)
 
 The ArkTS compiler transforms the declarative syntax into imperative calls wrapped in `observeComponentCreation` (or the optimized `observeComponentCreation2`) closures. These closures interact with `ViewStackProcessor` for ID allocation, dependency tracking, and stack-based tree construction.
 
@@ -56,11 +56,11 @@ this.observeComponentCreation((elmtId, isInitialRender) => {
 
 ![ArkUI declarative transpilation pipeline and ViewStackProcessor bridge]({{ "/assets/transpilation_diagram.png" | relative_url }})
 
-*Figure 1: From author-written ArkTS to transpiled `observeComponentCreation` code that drives `ViewStackProcessor` and builds the native `FrameNode` tree.*
+*Figure 1: From TS to transpiled `observeComponentCreation` code that drives `ViewStackProcessor` and builds the native `FrameNode` tree.*
 
 There is no runtime interpretation of the nice declarative syntax you wrote. Every component creation flows through a tiny, well-defined bridge into C++.
 
-### Tree formation with ViewStackProcessor
+## Tree formation with ViewStackProcessor
 
 `ViewStackProcessor` (see `frameworks/core/components_ng/base/view_stack_processor.h`) is the central singleton that owns the construction stack while declarative code executes:
 
@@ -78,11 +78,11 @@ When your component's `build()` (or equivalent) runs—whether on initial render
 
 This mechanism is the direct counterpart to Jetpack Compose's slot table / Composer or SwiftUI's view builder internals, but wired straight into ArkUI's retained C++ node tree.
 
-### Modules that remain (mostly) in the JS/ArkTS world
+## Modules that remain (mostly) in the TS world
 
 While the heavy lifting lives in C++, a few pieces stay in the higher-level language for developer experience and reactivity:
 
-- **Decorators and state** (`@Component`, `@State`, `@Link`, `@Builder`, `@Prop`, etc.)
+### **Decorators and state** (`@Component`, `@State`, `@Link`, `@Builder`, `@Prop`, etc.)
 
   The syntactic transformation and reactivity system are primarily the responsibility of the ArkTS compiler and the state management runtime. At execution time the engine only sees the `observeComponentCreation*` hooks plus access recording through `ViewStackProcessor`.
 
@@ -90,7 +90,7 @@ While the heavy lifting lives in C++, a few pieces stay in the higher-level lang
 
   `JSDataChangeListener` and `ElementRegister` provide the native-side hooks that make data-driven updates (ForEach, LazyForEach, etc.) efficient.
 
-- **Example: `@Component` + `@State` (conceptual)**
+**Example: `@Component` + `@State` (conceptual)**
 
   ```arkts
   @Component
@@ -110,15 +110,48 @@ While the heavy lifting lives in C++, a few pieces stay in the higher-level lang
 
 ![@State reactivity and targeted re-execution flow in ArkUI]({{ "/assets/state_variable_flow.png" | relative_url }})
 
-*Figure 3: When a @State variable mutates, only the affected component closures are re-executed using element IDs for efficient node reuse.*
+*Figure 3: When a @State variable mutates, only the affected component closures are re-executed using element IDs for efficient updates.*
 
-- **LazyForEach** (virtualized / lazy lists)
+### **LazyForEach** (virtualized / lazy lists)
 
   This has first-class support on both sides of the bridge (`js_lazy_foreach.cpp` in the declarative frontend and `LazyForEachNode` + `LazyForEachBuilder` in `frameworks/core/components_ng/syntax/`).
 
   It uses the `FrameProxy` virtualization mechanism inside `FrameNode` for on-demand creation, caching, and eviction of children based on the visible range. The ArkTS side supplies the data and item builder; the C++ side owns the recycling and diffing. This is a great example of deliberately keeping generation logic close to the developer while the performance-critical tree management stays native.
 
-Another important piece that stays lightweight in JavaScript is the `ModifierWithKey` system (implemented in `arkComponent.js` and bridged via `arkUINativeModule`):
+### Modifiers
+Another important piece that stays lightweight in JavaScript is the `Modifier` system. This is what backs the fluent attribute calls developers write every day:
+
+```ts
+Button('Save')
+  .width(160)
+  .height(48)
+  .backgroundColor(Color.Blue)
+  .fontColor(Color.White)
+  .borderRadius(8)
+  .onClick(() => this.save())
+```
+
+For app authors, these calls feel like ordinary declarative styling and event binding. Under the hood, each chained call records a small modifier object against the current component. When state changes, ArkUI can compare the old and new modifier values and send only the changed native update instead of replaying every property blindly.
+
+HarmonyOS also exposes this idea directly through `attributeModifier()`, which lets developers package reusable attribute logic into an `AttributeModifier` class:
+
+```ts
+class PrimaryButtonModifier implements AttributeModifier<ButtonAttribute> {
+  applyNormalAttribute(instance: ButtonAttribute): void {
+    instance
+      .height(48)
+      .backgroundColor(Color.Blue)
+      .fontColor(Color.White)
+      .borderRadius(8);
+  }
+}
+
+Button('Save')
+  .attributeModifier(new PrimaryButtonModifier())
+  .onClick(() => this.save())
+```
+
+The internal implementation of a simple attribute like `width` is then just a thin bridge object:
 
 ```ts
 class WidthModifier extends ModifierWithKey {
@@ -133,9 +166,9 @@ class WidthModifier extends ModifierWithKey {
 }
 ```
 
-This design allows cheap structural diffing on the JS side for state-driven updates before any native call is made.
+This design allows cheap structural diffing on the JS side for state-driven updates before any native call is made. The developer sees reusable declarative attributes; the engine sees keyed modifier objects that can be compared, reset, and applied through `arkUINativeModule`.
 
-### Cross platform by design
+## Cross platform by design
 
 The architecture was built with multiple frontends and backends in mind:
 
@@ -151,16 +184,12 @@ This is why ArkUI can deliver a consistent, high-performance declarative model a
 
 ArkUI's declarative engine achieves its performance by:
 
-- Making the JS/ArkTS layer a thin transpiled bridge.
+- Making the TS layer a thin transpiled bridge.
 - Driving almost everything through `ViewStackProcessor` + `ModelNG` into native `FrameNode` / `Pattern` objects.
 - Using element IDs + access recording for precise, incremental state updates.
 - Keeping only the developer-facing ergonomics (decorators, builders, lazy item generation) in the higher-level language.
-- Maintaining a clean multi-frontend / multi-backend architecture from day one.
+- Maintaining a clean multi-frontend / multi-backend architecture.
 
-The result is a system that feels like a modern declarative UI framework while executing with the efficiency of a retained-mode native engine.
+The result is a system that feels like a modern declarative UI framework while executing with the efficiency of a native rendering engine.
 
-In future parts we'll go deeper into the `FrameNode` + `Pattern` composition model, the dirty propagation and layout/paint pipeline, how LazyForEach and virtual scrolling actually work at the node level, and the native C API surface.
-
----
-
-*Sources for the details in this post include the arkui_ace_engine repository (especially `view_stack_processor.h`, `frame_node.cpp`, `pattern.h`, `arkComponent.js`, the declarative frontend bridges, and `LazyForEach*` implementations) together with the excellent auto-generated architecture documentation on DeepWiki.*
+In future parts we'll go deeper into the `FrameNode` + `Pattern` composition model, the dirty propagation and layout/paint pipeline, how LazyForEach and virtual scrolling actually work at the node level, and the raw C interface. Or we'll get back to the render service and talk about various low-level optimizations there.
