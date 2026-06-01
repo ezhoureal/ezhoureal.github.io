@@ -492,6 +492,7 @@ a:hover {
   border: 1px solid rgba(255, 255, 255, 0.22);
   background: #ffffff;
   box-shadow: 0 24px 80px rgba(0, 0, 0, 0.5);
+  cursor: zoom-out;   /* explicit so cursor is correct even while image is loading */
   transform: scale(var(--post-lightbox-image-scale));
   transform-origin: center;
   transition: transform 120ms ease;

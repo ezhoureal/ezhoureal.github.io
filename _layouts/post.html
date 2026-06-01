@@ -142,11 +142,14 @@ layout: default
     };
 
     const open = (image) => {
+      // Reveal the lightbox container first so the cursor updates instantly
+      // (the `cursor: zoom-out` is on the overlay). Then load the image content.
+      lightbox.hidden = false;
+      document.body.classList.add("has-post-image-lightbox");
+
       lightboxImage.src = image.currentSrc || image.src;
       lightboxImage.alt = image.alt || "Enlarged blog post image";
       setImageScale(minScale);
-      lightbox.hidden = false;
-      document.body.classList.add("has-post-image-lightbox");
     };
 
     images.forEach((image) => {
