@@ -2,7 +2,7 @@
 layout: post
 title: "Uncovering the UI Framework of HarmonyOS, Part 3: Efficient Redraws and Dirty Region Management"
 date: 2026-07-26 10:30:00 +0800
-categories: harmonyos rendering performance
+categories: HarmonyOS
 ---
 
 After covering the Rosen Render Service pipeline in [Part 1](/2026-05-14-uncovering-ui-framework-of-harmonyos-pt-1) and ArkUI's declarative engine in [Part 2](/2026-05-15-uncovering-ui-framework-of-harmonyos-pt-2), we now dive into one of the most performance-critical aspects of any rendering system: **deciding what actually needs to be redrawn each frame**.

@@ -2,7 +2,7 @@
 layout: post
 title: "Uncovering the UI Framework of HarmonyOS, Part 1: Rosen Render Service"
 date: 2026-05-14 20:55:00 +0800
-categories: harmonyos rendering
+categories: HarmonyOS
 ---
 
 After working on the open source foundation of HarmonyOS for nearly four years, and seeing the OS launch, ship, and climb from 0 to 60M+ users, I think it is time to unpack the design and optimization work behind the system.

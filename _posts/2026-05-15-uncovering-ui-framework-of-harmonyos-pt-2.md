@@ -2,7 +2,7 @@
 layout: post
 title: "Uncovering the UI Framework of HarmonyOS, Part 2: ArkUI Declarative UI Engine"
 date: 2026-05-15 10:30:00 +0800
-categories: harmonyos arkui declarative-ui
+categories: HarmonyOS
 ---
 
 After exploring the Rosen Render Service in [Part 1](/2026-05-14-uncovering-ui-framework-of-harmonyos-pt-1), we now move one layer up the stack to the declarative UI framework that developers actually use every day: **ArkUI**.
