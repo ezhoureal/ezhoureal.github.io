@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "HarmonyOS Deep Dive, Part 1: Rosen Render Service"
+title: "HarmonyOS Deep Dive Pt. 1: Rosen Render Service"
 date: 2026-05-14 20:55:00 +0800
 categories: HarmonyOS
 ---

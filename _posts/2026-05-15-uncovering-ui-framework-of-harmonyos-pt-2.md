@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "HarmonyOS Deep Dive, Part 2: ArkUI Declarative UI Engine"
+title: "ArkUI Declarative UI Engine - HarmonyOS Pt.2"
 date: 2026-05-15 10:30:00 +0800
 categories: HarmonyOS
 ---

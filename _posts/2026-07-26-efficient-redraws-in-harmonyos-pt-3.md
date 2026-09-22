@@ -1,15 +1,15 @@
 ---
 layout: post
-title: "HarmonyOS Deep Dive, Part 3: Efficient Redraws and Dirty Region Management"
+title: "Efficient Redraws and Dirty Region Management - HarmonyOS Pt.3"
 date: 2026-07-26 10:30:00 +0800
 categories: HarmonyOS
 ---
 
-After covering the Rosen Render Service pipeline in [Part 1](/2026-05-14-uncovering-ui-framework-of-harmonyos-pt-1) and ArkUI's declarative engine in [Part 2](/2026-05-15-uncovering-ui-framework-of-harmonyos-pt-2), we now dive into one of the most performance-critical aspects of any rendering system: **deciding what actually needs to be redrawn each frame**.
+We now look into one of the most performance-critical aspects of any rendering system: **deciding what actually needs to be redrawn each frame**.
 
-Modern UI frameworks face a simple but brutal math problem. A 120Hz display gives you roughly 8 milliseconds per frame. In that window, you need to process input, run animations, update layouts, generate draw commands, and submit everything to the GPU. If your screen has 2 million pixels and you redraw every single one of them every frame, you are burning CPU, GPU, and memory bandwidth on work that is often unnecessary.
+Modern UI frameworks face performance challenges constantly. A 120Hz display gives you roughly 8 milliseconds per frame. In that window, you need to process input, run animations, update layouts, generate draw commands, and submit everything to the GPU. If your screen has 2 million pixels and you redraw every single one of them every frame, you are burning CPU, GPU, and memory bandwidth on work that is often unnecessary.
 
-OpenHarmony's unified rendering architecture tackles this with two complementary strategies: **reuse** and **de-redundancy**. Together, they form the dirty region management system in Rosen Render Service.
+HarmonyOS's unified rendering architecture tackles this with two complementary strategies: **reuse** and **de-redundancy**. Together, they form the dirty region management system in Rosen Render Service.
 
 This article unpacks how those strategies work, where they fit in the rendering pipeline, and how the system tracks dirty regions at both the application level and the global screen level.
 
