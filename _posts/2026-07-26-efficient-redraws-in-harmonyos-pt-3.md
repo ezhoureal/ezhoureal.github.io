@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Uncovering the UI Framework of HarmonyOS, Part 3: Efficient Redraws and Dirty Region Management"
+title: "HarmonyOS Deep Dive, Part 3: Efficient Redraws and Dirty Region Management"
 date: 2026-07-26 10:30:00 +0800
 categories: HarmonyOS
 ---
