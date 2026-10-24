@@ -8,7 +8,7 @@ permalink: /profile/
   <div class="resume-header">
     <div>
       <h1 class="resume-name">Tianer Zhou</h1>
-      <p class="resume-role">Graphics & UI Framework Engineer • OpenHarmony, Huawei</p>
+      <p class="resume-role">M.Sc. Computer Science • EPFL</p>
     </div>
 
     <div class="resume-contact">
@@ -16,17 +16,26 @@ permalink: /profile/
       <a href="mailto:ezhoureal@gmail.com">ezhoureal@gmail.com</a>
       <a href="https://www.linkedin.com/in/tianer-zhou/" target="_blank" rel="noopener">LinkedIn</a>
       <a href="https://github.com/ezhoureal" target="_blank" rel="noopener">GitHub</a>
-      <span class="resume-location">Hangzhou, China</span>
+      <span class="resume-location">Lausanne, Switzerland</span>
       <a href="/assets/resume.pdf" class="resume-print" target="_blank" rel="noopener">Print / PDF</a>
     </div>
   </div>
 
   <p class="resume-intro">
-    I work on the open-source graphics and UI foundations of HarmonyOS at Huawei. My focus is building high-performance, reliable rendering systems that enrich millions of consumers.
+    I'm a Master's student in Computer Science at EPFL, researching server resource allocation for agentic AI workloads in the PARSA lab. Previously I spent four years at Huawei building the open-source graphics and UI foundations of HarmonyOS, now running on more than 80 million phones and tablets.
   </p>
 
   <section class="resume-section">
     <h2 class="resume-section-title">Education</h2>
+    <div class="resume-entry">
+      <div class="resume-entry-head">
+        <strong>EPFL (École Polytechnique Fédérale de Lausanne)</strong>
+        <span class="resume-date">Sep 2026 — Expected Summer 2028</span>
+      </div>
+      <div class="resume-entry-sub">Master of Science in Computer Science</div>
+      <p><strong>Coursework:</strong> Algorithms II, Multiprocessor Architecture, Concurrent Computing.</p>
+    </div>
+
     <div class="resume-entry">
       <div class="resume-entry-head">
         <strong>University of Michigan, Ann Arbor</strong>
@@ -56,15 +65,38 @@ permalink: /profile/
 
     <div class="resume-entry">
       <div class="resume-entry-head">
+        <strong><a href="https://parsa.epfl.ch/" target="_blank" rel="noopener">Parallel Systems Architecture Lab (PARSA)</a>, EPFL</strong>
+        <span class="resume-date">Sep 2026 — Present</span>
+      </div>
+      <div class="resume-entry-sub">Student Researcher — server resource allocation for agentic AI workloads</div>
+      <ul>
+        <li><strong>Workload Characterization:</strong> Profiling agentic benchmarks (SWE-bench, DABstep, MLE-bench) served by Kimi K3 on the CSCS cluster at system and micro-architecture level, decomposing end-to-end task time into LLM inference, tool execution, and harness overhead.</li>
+        <li><strong>Resource Balance Studies:</strong> Swept agent concurrency, CPU core count / frequency, and cache provisioning; found that today's servers oversupply CPU for agentic workloads, with throughput saturating at 2 cores per GPU.</li>
+      </ul>
+    </div>
+
+    <div class="resume-entry">
+      <div class="resume-entry-head">
+        <strong>Zhuhai Mingyue Private Fund Management</strong>
+        <span class="resume-date">Apr 2026 — Present</span>
+      </div>
+      <div class="resume-entry-sub">Quantitative Developer (Part-time, Remote) — Chinese equity &amp; futures manager, 10B+ CNY AUM</div>
+      <ul>
+        <li><strong>Event-Driven Trading System:</strong> Built core components of a Python event-driven engine (signal monitoring, rebalancing, order management) bridging live market data and broker execution over Redis Pub/Sub for ~5,000 stocks on 3 s snapshots.</li>
+        <li><strong>Reliability &amp; Data Service:</strong> Made the event bus thread-safe, sandboxed user-submitted code, fixed look-ahead bias in the backtester, and hardened the firm's market-data API (FastAPI over ClickHouse / MySQL, ~3B rows of minute bars).</li>
+      </ul>
+    </div>
+
+    <div class="resume-entry">
+      <div class="resume-entry-head">
         <strong>Huawei Technologies</strong>
         <span class="resume-date">Aug 2022 — Aug 2026</span>
       </div>
-      <div class="resume-entry-sub">Graphics Engineer, <a href="https://gitcode.com/openharmony">HarmonyOS Graphics Foundation</a> — now deployed on 70M+ devices</div>
+      <div class="resume-entry-sub">Graphics Engineer, <a href="https://gitcode.com/openharmony">HarmonyOS Graphics Foundation</a> — deployed on 80M+ devices</div>
       <ul>
         <li><strong>Rendering Pipeline &amp; Shader Optimization:</strong> Developed production 2D visual-effect shaders and an asynchronous color-extraction algorithm for adaptive glass effects; built automated parameter-search tooling to tune shader parameters and improve runtime performance up to 10%.</li>
         <li><strong>Model Fine-tuning and Deployment:</strong> Quantized and deployed a 6B-parameter diffusion model for mobile, generating 2K-resolution images on flagship mobile NPUs in 10 seconds. Curated a style-transfer dataset of 100+ entries and fine-tuned the model with LoRA on 4 V100s using FSDP.</li>
       </ul>
-      <p>Exploring on-device 3D Gaussian rendering and lightweight generative models for mobile.</p>
     </div>
 
     <div class="resume-entry">
@@ -79,13 +111,14 @@ permalink: /profile/
       <li><strong>AI Systems:</strong> Diffusion / flow matching, LLM, JEPA, Model-based Planning, RL, training / inference parallelism, KV Cache, attention kernels</li>
       <li><strong>Frameworks:</strong> PyTorch, Jax, Lightning</li>
       <li><strong>Programming Languages:</strong> C++, TypeScript, Rust, Go, Python</li>
+      <li><strong>Backend &amp; Data:</strong> FastAPI, Redis, ClickHouse, MySQL, Docker</li>
       <li><strong>Systems:</strong> Distributed Systems, Graphics Runtime, Compiler, xv6 Kernel</li>
       <li><strong>AI Harness:</strong> Codex, Claude Code, Openclaw</li>
     </ul>
   </section>
 
   <div class="resume-footer">
-    <p>Always happy to chat about machine learning, operating systems, and rendering.</p>
+    <p>Always happy to chat about AI systems, machine learning, computer architecture, operating systems, and rendering.</p>
     <a href="https://github.com/ezhoureal" class="btn btn-primary" target="_blank" rel="noopener">GitHub →</a>
   </div>
 </div>

@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Efficient Redraws and Dirty Region Management - HarmonyOS Pt.3"
+title: "Efficient Redraws and Dirty Region Management"
 date: 2026-07-26 10:30:00 +0800
 categories: HarmonyOS
 ---
