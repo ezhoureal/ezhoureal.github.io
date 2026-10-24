@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 850 370" width="850" height="370" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="a-gray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#94a3b8"/></marker>
+    <marker id="a-amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#f59e0b"/></marker>
+    <marker id="a-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#10b981"/></marker>
+  </defs>
+  <rect width="850" height="370" rx="10" fill="#0f172a"/>
+
+  <!-- Lanes: render 20-96, composer 96-172, HWC 172-248, GPU 248-324 -->
+  <g stroke="#1e293b">
+    <line x1="20" y1="96" x2="830" y2="96"/>
+    <line x1="20" y1="172" x2="830" y2="172"/>
+    <line x1="20" y1="248" x2="830" y2="248"/>
+  </g>
+  <g font-size="12" font-weight="700" font-family="SFMono-Regular, Menlo, Consolas, monospace">
+    <text x="24" y="56" fill="#c084fc">render</text><text x="24" y="72" fill="#64748b" font-weight="400" font-size="11">CPU thread</text>
+    <text x="24" y="132" fill="#34d399">composer</text><text x="24" y="148" fill="#64748b" font-weight="400" font-size="11">CPU thread</text>
+    <text x="24" y="208" fill="#38bdf8">display / HWC</text><text x="24" y="224" fill="#64748b" font-weight="400" font-size="11">hardware</text>
+    <text x="24" y="284" fill="#f59e0b">GPU</text><text x="24" y="300" fill="#64748b" font-weight="400" font-size="11">no thread needed</text>
+  </g>
+
+  <g font-size="11" font-weight="600" text-anchor="middle" fill="#fff">
+    <!-- Render thread -->
+    <rect x="160" y="38" width="120" height="40" rx="4" fill="#7e22ce" stroke="#c084fc"/>
+    <text x="220" y="55">OnDraw()</text><text x="220" y="70" font-weight="400" fill="#e9d5ff">build draw ops</text>
+    <rect x="284" y="38" width="60" height="40" rx="4" fill="#7e22ce" stroke="#c084fc"/>
+    <text x="314" y="62">Flush()</text>
+    <rect x="348" y="38" width="116" height="40" rx="4" fill="#581c87" stroke="#a855f7"/>
+    <text x="406" y="62">CommitLayers()</text>
+    <rect x="476" y="38" width="354" height="40" rx="4" fill="#3b0764" stroke="#7e22ce" stroke-dasharray="4,3"/>
+    <text x="653" y="62" fill="#d8b4fe" font-weight="400">already working on frame N+1</text>
+
+    <!-- Composer thread -->
+    <rect x="476" y="114" width="44" height="40" rx="4" fill="#1e293b" stroke="#34d399" stroke-dasharray="3,3"/>
+    <text x="498" y="138" fill="#6ee7b7" font-weight="400">delay</text>
+    <rect x="524" y="114" width="120" height="40" rx="4" fill="#047857" stroke="#34d399"/>
+    <text x="584" y="131">SetRSLayers</text><text x="584" y="146">Repaint()</text>
+    <rect x="648" y="114" width="112" height="40" rx="4" fill="#065f46" stroke="#10b981"/>
+    <text x="704" y="138">ReleaseLayers()</text>
+
+    <!-- Display / HWC -->
+    <rect x="648" y="190" width="52" height="40" rx="4" fill="#1e293b" stroke="#f59e0b" stroke-dasharray="3,3"/>
+    <text x="674" y="207" fill="#fcd34d" font-weight="400">fence</text><text x="674" y="221" fill="#fcd34d" font-weight="400">wait</text>
+    <rect x="704" y="190" width="126" height="40" rx="4" fill="#0284c7" stroke="#38bdf8"/>
+    <text x="767" y="214">scan out frame N</text>
+
+    <!-- GPU -->
+    <rect x="344" y="266" width="356" height="40" rx="4" fill="#b45309" stroke="#f59e0b"/>
+    <text x="522" y="290">rasterize frame N (asynchronous)</text>
+  </g>
+
+  <g font-size="10" fill="#cbd5e1">
+    <!-- Flush submits to GPU -->
+    <path d="M314 78 L314 216 L346 264" stroke="#f59e0b" stroke-width="1.5" fill="none" marker-end="url(#a-amber)"/>
+    <text x="320" y="136" fill="#fcd34d">submit</text>
+    <!-- CommitLayers hands layers + acquire fence to composer -->
+    <path d="M440 78 L480 112" stroke="#94a3b8" stroke-width="1.5" fill="none" marker-end="url(#a-gray)"/>
+    <text x="384" y="96" text-anchor="middle">buffer +</text><text x="384" y="108" text-anchor="middle">acquire fence</text>
+    <!-- Repaint commits to HWC -->
+    <path d="M620 154 L652 188" stroke="#94a3b8" stroke-width="1.5" fill="none" marker-end="url(#a-gray)"/>
+    <text x="604" y="178" text-anchor="end">HWC commit</text>
+    <!-- GPU done: fence signals -->
+    <path d="M700 266 L700 233" stroke="#f59e0b" stroke-width="2" stroke-dasharray="4,3" fill="none" marker-end="url(#a-amber)"/>
+    <text x="708" y="258" fill="#fcd34d" font-weight="600">fence signals</text>
+    <!-- Release returns buffers -->
+    <path d="M740 114 L740 81" stroke="#10b981" stroke-width="1.5" stroke-dasharray="4,3" fill="none" marker-end="url(#a-green)"/>
+    <text x="732" y="102" fill="#6ee7b7" text-anchor="end">older buffers + release fences</text>
+  </g>
+
+  <text x="24" y="350" font-size="11" fill="#94a3b8">Nobody on the CPU waits for the GPU. The display hardware waits on the acquire fence instead.</text>
+</svg>
