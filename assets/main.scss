@@ -866,7 +866,10 @@ td {
 }
 
 .hero-heading {
+  flex: 1 1 0;
+  align-self: stretch;
   min-width: 0;
+  container-type: inline-size;
 }
 
 .hero-photo {
@@ -889,7 +892,8 @@ td {
 }
 
 .hero-title {
-  font-size: clamp(36px, 7vw, 84px);
+  /* Scales with the heading column so the name stays on one line. */
+  font-size: min(10cqi, 84px);
   font-weight: 800;
   line-height: 0.9;
   letter-spacing: -0.02em;
@@ -897,11 +901,11 @@ td {
 }
 
 .hero-subtitle {
-  font-size: clamp(20px, 3.2vw, 28px);
+  /* One line on wide columns; floors at body size and wraps on phones. */
+  font-size: clamp(18px, 4cqi, 28px);
   font-weight: 700;
   color: var(--body-copy);
   margin: 0 0 18px;
-  max-width: 38ch;
 }
 
 .hero-meta {
