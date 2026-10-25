@@ -858,6 +858,27 @@ td {
   max-width: 920px;
 }
 
+.hero-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: clamp(24px, 5vw, 56px);
+}
+
+.hero-heading {
+  min-width: 0;
+}
+
+.hero-photo {
+  flex: 0 0 auto;
+  width: clamp(140px, 20vw, 220px);
+  height: auto;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border: 1px solid var(--image-border);
+  box-shadow: 10px 10px 0 var(--image-shadow);
+}
+
 .hero-mono {
   font-size: 11px;
   font-weight: 800;
@@ -1274,6 +1295,16 @@ td {
 }
 
 @media screen and (max-width: 520px) {
+  .hero-top {
+    flex-direction: column-reverse;
+    gap: 28px;
+  }
+
+  .hero-photo {
+    width: 132px;
+    box-shadow: 8px 8px 0 var(--image-shadow);
+  }
+
   .hero-actions {
     flex-direction: column;
     align-items: stretch;
